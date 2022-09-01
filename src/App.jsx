@@ -1,44 +1,43 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Login from "./components/loginExample/Login";
-import Signup from "./components/loginExample/Signup";
 
 function App() {
   // this is a comment
+  const [fetchedData, setFetchedData] = useState("");
+  const [userSelection, setUserSelection] = useState("");
 
-  const [showLogin, setShowLogin] = useState(true);
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+  async function fetchData() {
+    const url = `https://jsonplaceholder.typicode.com/posts/${userSelection}`;
 
-  function toggleLogin() {
-    setShowLogin(!showLogin);
+    const response = await fetch(url);
+    const responseData = await response.json();
+    console.log(responseData);
+    setFetchedData(responseData);
+  }
+
+  useEffect(() => {
+    if (userSelection) {
+      fetchData();
+    }
+  }, [userSelection]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setUserSelection(e.target.postNumber.value);
   }
 
   return (
     <div className="App">
       <Header />
-      {showLogin ? (
-        <Login
-          toggleLogin={toggleLogin}
-          userName={userName}
-          password={password}
-          setUserName={setUserName}
-          setPassword={setPassword}
-        />
-      ) : (
-        <Signup
-          toggleLogin={toggleLogin}
-          userName={userName}
-          password={password}
-          setUserName={setUserName}
-          setPassword={setPassword}
-        />
-      )}
-
-      <button onClick={toggleLogin}>Parent App.jsx Button</button>
-
+      <form onSubmit={handleSubmit}>
+        <h2>Select a numerical value</h2>
+        <input type="text" name="postNumber" />
+        <button type="submit">Click to Submit</button>
+      </form>
+      <h2>{fetchedData.title}</h2>
+      <div>{fetchedData.body}</div>
       <Footer />
     </div>
   );
