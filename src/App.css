@@ -2,6 +2,26 @@
   text-align: center;
 }
 
+nav > ul {
+  display: flex;
+  list-style-type: none;
+}
+
+nav > ul> li {
+  margin: 15px
+}
+/* nav> ul{
+  list-style-type: none;
+  display:flex;
+}
+
+nav> ul> li{
+  margin: 15px;
+} */
+ul {
+  text-align: left;
+  list-style-position: inside;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
